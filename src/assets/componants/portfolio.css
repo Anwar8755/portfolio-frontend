@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --ide-bg: #0d1117;
+  --ide-bg-elevated: #161b22;
+  --ide-border: #21262d;
+  --ide-text-dim: #8b949e;
+  --ide-text-bright: #e6edf3;
+  --accent-cyan: #56d4dd;
+  --accent-green: #3fb950;
+  --accent-red: #f85149;
+  --accent-yellow: #d29922;
+  --accent-purple: #bc8cff;
+}
+
+* { box-sizing: border-box; }
+
+.ide-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: rgba(13, 17, 23, 0.85);
+  border-bottom: 1px solid var(--ide-border);
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, Consolas, monospace;
+  transition: background 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.ide-nav.scrolled {
+  background: rgba(13, 17, 23, 0.97);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 var(--ide-border), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.ide-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: var(--accent-red); }
+.dot-yellow { background: var(--accent-yellow); }
+.dot-green { background: var(--accent-green); }
+
+.logo {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  height: 32px;
+  width: auto;
+}
+
+.menu-toggle {
+  display: none;
+  font-family: inherit;
+  color: var(--accent-cyan);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid var(--ide-border);
+  border-radius: 4px;
+  background: var(--ide-bg-elevated);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.menu-toggle:hover {
+  border-color: var(--accent-cyan);
+}
+
+.list ul {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list ul li a,
+.logout-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ide-text-dim);
+  text-decoration: none;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.list ul li a::before {
+  content: "<";
+  color: var(--accent-purple);
+  margin-right: 2px;
+  opacity: 0.8;
+}
+.list ul li a::after {
+  content: "/>";
+  color: var(--accent-purple);
+  margin-left: 2px;
+  opacity: 0.8;
+}
+
+.list ul li a:hover {
+  color: var(--ide-text-bright);
+  background: var(--ide-bg-elevated);
+  border-color: var(--ide-border);
+}
+
+.list ul li a.active {
+  color: var(--accent-green);
+  background: rgba(63, 185, 80, 0.1);
+  border-color: rgba(63, 185, 80, 0.35);
+}
+.list ul li a.active::before,
+.list ul li a.active::after {
+  color: var(--accent-green);
+}
+
+/* "Hire Me" reads as the CTA / runnable script */
+.list ul li:last-child a {
+  color: var(--accent-cyan);
+  border-color: rgba(86, 212, 221, 0.3);
+}
+.list ul li:last-child a::before,
+.list ul li:last-child a::after {
+  color: var(--accent-cyan);
+}
+.list ul li:last-child a:hover {
+  background: rgba(86, 212, 221, 0.12);
+}
+.list ul li:last-child a.active {
+  color: var(--accent-green);
+}
+
+.logout-btn {
+  color: var(--accent-red);
+  border: 1px solid rgba(248, 81, 73, 0.35);
+}
+.logout-btn::before {
+  content: "$ ";
+  color: var(--ide-text-dim);
+}
+.logout-btn:hover {
+  background: rgba(248, 81, 73, 0.1);
+}
+
+.ide-divider {
+  border: none;
+  border-top: 1px solid var(--ide-border);
+  margin: 0;
+}
+
+a:focus-visible,
+.menu-toggle:focus-visible,
+.logout-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--ide-bg);
+    border-bottom: 1px solid var(--ide-border);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    z-index: 999;
+  }
+
+  .list.active {
+    max-height: 400px;
+  }
+
+  .list ul {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 20px;
+    gap: 4px;
+  }
+
+  .list ul li,
+  .list ul li a {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ide-nav,
+  .list,
+  .menu-toggle,
+  .list ul li a,
+  .logout-btn {
+    transition: none !important;
+  }
+}

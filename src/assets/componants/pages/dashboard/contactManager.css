@@ -1,0 +1,421 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  --bg-deep: #0a0e14;
+  --surface: #12161f;
+  --surface-titlebar: #0d1117;
+  --border: #232938;
+  --border-soft: #1c2230;
+
+  --text-primary: #f1f3f7;
+  --text-muted: #8b93a7;
+  --text-faint: #586176;
+
+  --teal: #2dd9c8;
+  --teal-soft: rgba(45, 217, 200, 0.12);
+  --purple: #a78bfa;
+  --purple-soft: rgba(167, 139, 250, 0.12);
+  --green: #34d399;
+  --green-soft: rgba(52, 211, 153, 0.12);
+  --amber: #fbbf24;
+  --amber-soft: rgba(251, 191, 36, 0.12);
+  --red: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.1);
+
+  --mac-red: #ff5f57;
+  --mac-yellow: #febc2e;
+  --mac-green: #28c840;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.contact-manager {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 32px);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-primary);
+}
+
+/* ---------- Header ---------- */
+
+.cm-header {
+  margin-bottom: 22px;
+}
+
+.cm-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--purple);
+  margin: 0 0 8px;
+}
+
+.cm-header-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cm-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(22px, 3.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  background: linear-gradient(90deg, #f5f7fa 0%, var(--teal) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cm-count-pill {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border: 1px solid rgba(45, 217, 200, 0.25);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.cm-subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin: 8px 0 0;
+}
+
+/* ---------- Search ---------- */
+
+.cm-search-row {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.cm-search-prompt {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.5px;
+  pointer-events: none;
+}
+
+.cm-search-input {
+  width: 100%;
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 13px 11px 30px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.5px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cm-search-input::placeholder {
+  color: var(--text-faint);
+}
+
+.cm-search-input:hover {
+  border-color: #2c3346;
+}
+
+.cm-search-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+
+/* ---------- Empty state ---------- */
+
+.cm-empty {
+  text-align: center;
+  padding: 48px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--text-muted);
+}
+
+.cm-empty p:last-child {
+  margin: 0;
+  font-size: 13.5px;
+}
+
+/* ---------- Message list ---------- */
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cm-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  animation: card-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cm-card:hover {
+  box-shadow: 0 18px 36px -20px rgba(0, 0, 0, 0.55);
+}
+
+.cm-card--teal { border-left-color: var(--teal); }
+.cm-card--purple { border-left-color: var(--purple); }
+.cm-card--green { border-left-color: var(--green); }
+.cm-card--amber { border-left-color: var(--amber); }
+
+.cm-card-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background: var(--surface-titlebar);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dot--red { background: var(--mac-red); }
+.dot--yellow { background: var(--mac-yellow); }
+.dot--green { background: var(--mac-green); }
+
+.cm-card-filename {
+  margin-left: 4px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.cm-card-body {
+  padding: 16px clamp(14px, 3vw, 20px) 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cm-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cm-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cm-avatar--teal { background: var(--teal-soft); color: var(--teal); }
+.cm-avatar--purple { background: var(--purple-soft); color: var(--purple); }
+.cm-avatar--green { background: var(--green-soft); color: var(--green); }
+.cm-avatar--amber { background: var(--amber-soft); color: var(--amber); }
+
+.cm-card-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.cm-card-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15.5px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.cm-email-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.cm-email-btn:hover {
+  color: var(--teal);
+}
+
+.cm-email-btn svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.cm-copied {
+  position: absolute;
+  left: 0;
+  top: -22px;
+  font-size: 10.5px;
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 5px;
+  padding: 2px 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.cm-copied--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cm-meta-row {
+  display: flex;
+  gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+}
+
+.cm-meta-label {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  align-self: center;
+}
+
+.cm-meta-value {
+  color: var(--text-muted);
+}
+
+.cm-subject-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-soft);
+  padding-top: 10px;
+}
+
+.cm-prompt {
+  color: var(--green);
+}
+
+.cm-subject-text {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.cm-message-text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 12px 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cm-card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cm-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: var(--red-soft);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: var(--red);
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cm-delete-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.cm-delete-btn:hover {
+  background: rgba(248, 113, 113, 0.2);
+}
+
+/* ---------- Accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 480px) {
+  .cm-title {
+    font-size: 21px;
+  }
+
+  .cm-card-top {
+    flex-wrap: wrap;
+  }
+
+  .cm-card-actions {
+    justify-content: stretch;
+  }
+
+  .cm-delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

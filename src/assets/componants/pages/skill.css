@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tech-container {
+  max-width: 1000px;
+  width: 90%;
+  margin: 120px auto;
+  padding: 70px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.tech-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 50px;
+  background: rgba(0,0,0,0.3);
+  animation: fadeIn 0.6s ease-out;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+  cursor: default;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.tech-badge:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.1);
+}
+
+.tech-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.skill-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Tablets and Below */
+@media (max-width: 768px) {
+  .tech-container {
+    margin: 60px auto;
+    padding: 50px 15px;
+  }
+
+  .tech-title {
+    font-size: 1.6rem;
+    padding: 10px 18px;
+  }
+
+  .tech-badge {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+  }
+
+  .tech-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .skill-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+  .tech-container {
+    margin: 40px auto;
+    padding: 40px 10px;
+  }
+
+  .tech-title {
+    font-size: 1.4rem;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tech-badge {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  .tech-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .skill-icon {
+    width: 22px;
+    height: 22px;
+  }
+}

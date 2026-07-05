@@ -1,0 +1,561 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  --bg-deep: #0a0e14;
+  --surface: #12161f;
+  --surface-titlebar: #0d1117;
+  --border: #232938;
+  --border-soft: #1c2230;
+
+  --text-primary: #f1f3f7;
+  --text-muted: #8b93a7;
+  --text-faint: #586176;
+
+  --teal: #2dd9c8;
+  --teal-soft: rgba(45, 217, 200, 0.12);
+  --purple: #a78bfa;
+  --purple-soft: rgba(167, 139, 250, 0.12);
+  --green: #34d399;
+  --green-soft: rgba(52, 211, 153, 0.12);
+  --amber: #fbbf24;
+  --amber-soft: rgba(251, 191, 36, 0.12);
+  --red: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.1);
+
+  --mac-red: #ff5f57;
+  --mac-yellow: #febc2e;
+  --mac-green: #28c840;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.skill-manager {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 32px);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-primary);
+}
+
+/* ---------- Header ---------- */
+
+.sm-header {
+  margin-bottom: 22px;
+}
+
+.sm-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--purple);
+  margin: 0 0 8px;
+}
+
+.sm-header-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.sm-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(22px, 3.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  background: linear-gradient(90deg, #f5f7fa 0%, var(--teal) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sm-count-pill {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border: 1px solid rgba(45, 217, 200, 0.25);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.sm-subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin: 8px 0 0;
+}
+
+/* ---------- Terminal card shell (shared) ---------- */
+
+.terminal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+}
+
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface-titlebar);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 7px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot--red { background: var(--mac-red); }
+.dot--yellow { background: var(--mac-yellow); }
+.dot--green { background: var(--mac-green); }
+
+.terminal-filename {
+  margin-left: 4px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.terminal-lang {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border-radius: 5px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* ---------- Form card ---------- */
+
+.sm-form-card {
+  margin-bottom: 26px;
+  animation: card-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sm-form {
+  padding: 22px clamp(16px, 3vw, 26px) 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sm-field-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.sm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.sm-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 6px;
+}
+
+.sm-prompt {
+  color: var(--green);
+}
+
+.sm-field input,
+.sm-search-input {
+  width: 100%;
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.5px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sm-field input::placeholder,
+.sm-search-input::placeholder {
+  color: var(--text-faint);
+}
+
+.sm-field input:hover,
+.sm-search-input:hover {
+  border-color: #2c3346;
+}
+
+.sm-field input:focus,
+.sm-search-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+
+/* ---------- Color row ---------- */
+
+.sm-color-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: end;
+}
+
+.sm-color-field,
+.sm-preview-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.sm-color-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.sm-color-swatch {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sm-color-swatch input[type="color"] {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.sm-color-hex {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.sm-preview-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid var(--border);
+}
+
+/* ---------- Form actions ---------- */
+
+.sm-form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sm-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--teal);
+  color: #06231f;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 22px -10px rgba(45, 217, 200, 0.45);
+}
+
+.sm-submit svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.2s ease;
+}
+
+.sm-submit:hover {
+  filter: brightness(1.08);
+}
+
+.sm-submit:hover svg {
+  transform: translateX(2px);
+}
+
+.sm-submit:active {
+  transform: scale(0.98);
+}
+
+.sm-cancel {
+  padding: 11px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.sm-cancel:hover {
+  border-color: var(--text-faint);
+  color: var(--text-primary);
+}
+
+/* ---------- Search ---------- */
+
+.sm-search-row {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.sm-search-prompt {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.5px;
+  pointer-events: none;
+}
+
+.sm-search-input {
+  padding-left: 30px;
+}
+
+/* ---------- Empty state ---------- */
+
+.sm-empty {
+  text-align: center;
+  padding: 48px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--text-muted);
+}
+
+.sm-empty p:last-child {
+  margin: 0;
+  font-size: 13.5px;
+}
+
+/* ---------- Skill grid ---------- */
+
+.sm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.sm-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.sm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.55);
+}
+
+.sm-card--teal { border-left-color: var(--teal); }
+.sm-card--purple { border-left-color: var(--purple); }
+.sm-card--green { border-left-color: var(--green); }
+.sm-card--amber { border-left-color: var(--amber); }
+
+.sm-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sm-card-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sm-card-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.sm-card-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.sm-card-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sm-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.sm-edit-btn,
+.sm-delete-btn {
+  flex: 1;
+  padding: 7px 0;
+  border-radius: 7px;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.sm-edit-btn {
+  background: var(--purple-soft);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  color: var(--purple);
+}
+
+.sm-edit-btn:hover {
+  background: rgba(167, 139, 250, 0.2);
+}
+
+.sm-delete-btn {
+  background: var(--red-soft);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: var(--red);
+}
+
+.sm-delete-btn:hover {
+  background: rgba(248, 113, 113, 0.2);
+}
+
+/* ---------- Accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-form-card,
+  .sm-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ---------- Responsive breakpoints ---------- */
+
+@media (max-width: 720px) {
+  .sm-color-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sm-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sm-color-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sm-preview-field {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 420px) {
+  .sm-form {
+    padding: 18px 14px 20px;
+  }
+
+  .sm-title {
+    font-size: 21px;
+  }
+
+  .sm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sm-form-actions {
+    flex-direction: column;
+  }
+
+  .sm-submit,
+  .sm-cancel {
+    width: 100%;
+  }
+}
