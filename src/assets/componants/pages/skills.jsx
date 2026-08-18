@@ -9,7 +9,7 @@ export default function Technologies() {
     const fetchSkills = async () => {
       try {
         const res = await API.get("/skills");
-        setSkills(res.data);
+        setSkills(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error("Error fetching skills:", err);
       }

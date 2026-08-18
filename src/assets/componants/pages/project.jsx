@@ -15,7 +15,7 @@ export default function Project() {
   const fetchProjects = async () => {
     try {
       const res = await axios.get(`${API_BASE_URL}/projects`);
-      setProjects(res.data);
+      setProjects(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error fetching projects:", err);
     }

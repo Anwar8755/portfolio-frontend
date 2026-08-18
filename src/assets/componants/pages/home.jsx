@@ -19,14 +19,14 @@ export default function Home() {
   useEffect(() => { fetchProjects(); }, []);
 
   const fetchSkills = async () => {
-    try { const res = await API.get("/skills"); setSkills(res.data); }
+    try { const res = await API.get("/skills"); setSkills(Array.isArray(res.data) ? res.data : []); }
     catch (err) { console.error("Error fetching skills:", err); }
   };
 
   const fetchProjects = async () => {
     try {
       const res = await axios.get(`${API_BASE_URL}/projects`);
-      setProjects(res.data.slice(0, 4));
+      setProjects(Array.isArray(res.data) ? res.data.slice(0, 4) : []);
     } catch (err) { console.error("Error fetching projects:", err); }
   };
 
