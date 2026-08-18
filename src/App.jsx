@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './App.css';
 import FloatingContact from "./assets/componants/pages/FloatingContact";
+import AiChat from "./assets/componants/pages/AiChat";
 import Home from "./assets/componants/pages/Home";
 import Portfolio from "./assets/componants/portfolio";
 import Project from "./assets/componants/pages/project";
@@ -20,6 +21,7 @@ function PublicLayout({ children }) {
   return (
     <>
       <Portfolio />
+       <AiChat />          
       <FloatingContact />
       {children}
     </>
