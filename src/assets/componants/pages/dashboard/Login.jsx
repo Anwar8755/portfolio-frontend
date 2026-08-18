@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../../../services/api";
-import "./Login.css";
+import "./login.css";
 
 export default function Login() {
   const [formData, setFormData] = useState({ username: "", password: "" });
