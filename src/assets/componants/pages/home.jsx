@@ -22,6 +22,7 @@ const CATEGORY_COLORS = {
   Tools: "#d29922",
 };
 const FALLBACK_COLORS = ["#56d4dd", "#3fb950", "#bc8cff", "#d29922", "#f85149", "#f0883e"];
+
 /* ── CHARACTER-BY-CHARACTER TERMINAL TYPEWRITER FOR EDUCATION ── */
 function EducationTerminal({ items }) {
   const [displayedText, setDisplayedText] = useState("");
@@ -76,7 +77,6 @@ function EducationTerminal({ items }) {
     return () => clearInterval(interval);
   }, [started, fullText]);
 
-  /* render displayedText with syntax highlighting by re-parsing what's shown so far */
   const renderHighlighted = (text) => {
     const parts = text.split(/(".*?")/g);
     return parts.map((part, idx) => {
@@ -310,53 +310,62 @@ export default function Home() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
 
-    const ctx = gsap.context(() => {
-      gsap.timeline({ defaults: { ease: "power4.out" } })
-        .from(".hero-label", { opacity: 0, y: -12, duration: 0.5 })
-        .from(".hero-left h1 .line", { opacity: 0, y: 40, duration: 0.7, stagger: 0.1 }, "-=0.2")
-        .from(".hero-sub", { opacity: 0, y: 16, duration: 0.55 }, "-=0.35")
-        .from(".hero-actions > *", { opacity: 0, y: 14, duration: 0.45, stagger: 0.1 }, "-=0.3")
-        .from(".hero-socials a", { opacity: 0, scale: 0.7, duration: 0.4, stagger: 0.08 }, "-=0.2")
-        .from(".code-card", { opacity: 0, x: 50, duration: 0.8 }, "-=0.7")
-        .from(".code-card .code-row", { opacity: 0, x: -8, duration: 0.3, stagger: 0.07 }, "-=0.35");
+    let ctx;
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        gsap.timeline({ defaults: { ease: "power4.out" } })
+          .from(".hero-label", { opacity: 0, y: -12, duration: 0.5 })
+          .from(".hero-left h1 .line", { opacity: 0, y: 40, duration: 0.7, stagger: 0.1 }, "-=0.2")
+          .from(".hero-sub", { opacity: 0, y: 16, duration: 0.55 }, "-=0.35")
+          .from(".hero-actions > *", { opacity: 0, y: 14, duration: 0.45, stagger: 0.1 }, "-=0.3")
+          .from(".hero-socials a", { opacity: 0, scale: 0.7, duration: 0.4, stagger: 0.08 }, "-=0.2")
+          .from(".code-card", { opacity: 0, x: 50, duration: 0.8 }, "-=0.7")
+          .from(".code-card .code-row", { opacity: 0, x: -8, duration: 0.3, stagger: 0.07 }, "-=0.35");
 
-      gsap.utils.toArray(".sr").forEach((el) => {
-        gsap.from(el, {
-          opacity: 0, y: 44, duration: 0.7, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" }
+        gsap.utils.toArray(".sr").forEach((el) => {
+          gsap.from(el, {
+            opacity: 0, y: 44, duration: 0.7, ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" }
+          });
+        });
+        gsap.utils.toArray(".sr-stagger").forEach((parent) => {
+          gsap.from(parent.children, {
+            opacity: 0, y: 28, duration: 0.6, ease: "power3.out", stagger: 0.08,
+            scrollTrigger: { trigger: parent, start: "top 88%", toggleActions: "play none none none" }
+          });
+        });
+        gsap.utils.toArray("[data-count]").forEach((el) => {
+          const target = parseFloat(el.getAttribute("data-count"));
+          const suffix = el.getAttribute("data-suffix") || "";
+          const obj = { v: 0 };
+          ScrollTrigger.create({
+            trigger: el, start: "top 90%", once: true,
+            onEnter: () => gsap.to(obj, {
+              v: target, duration: 1.4, ease: "power2.out",
+              onUpdate: () => { el.textContent = Math.floor(obj.v) + suffix; }
+            }),
+          });
         });
       });
-      gsap.utils.toArray(".sr-stagger").forEach((parent) => {
-        gsap.from(parent.children, {
-          opacity: 0, y: 28, duration: 0.6, ease: "power3.out", stagger: 0.08,
-          scrollTrigger: { trigger: parent, start: "top 88%", toggleActions: "play none none none" }
-        });
-      });
-      gsap.utils.toArray("[data-count]").forEach((el) => {
-        const target = parseFloat(el.getAttribute("data-count"));
-        const suffix = el.getAttribute("data-suffix") || "";
-        const obj = { v: 0 };
-        ScrollTrigger.create({
-          trigger: el, start: "top 90%", once: true,
-          onEnter: () => gsap.to(obj, {
-            v: target, duration: 1.4, ease: "power2.out",
-            onUpdate: () => { el.textContent = Math.floor(obj.v) + suffix; }
-          }),
-        });
-      });
-    });
-    return () => ctx.revert();
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
-  useEffect(() => {
-  const timer = setTimeout(() => { ScrollTrigger.refresh(); }, 300);
-  return () => clearTimeout(timer);
-}, [projects, skills, about, timeline, whyItems, testimonials, education]);
 
-useEffect(() => {
-  const handleLoad = () => ScrollTrigger.refresh();
-  window.addEventListener("load", handleLoad);
-  return () => window.removeEventListener("load", handleLoad);
-}, []);
+  useEffect(() => {
+    const timer = setTimeout(() => { ScrollTrigger.refresh(); }, 300);
+    return () => clearTimeout(timer);
+  }, [projects, skills, about, timeline, whyItems, testimonials, education]);
+
+  useEffect(() => {
+    const handleLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", handleLoad);
+    return () => window.removeEventListener("load", handleLoad);
+  }, []);
+
   const uniqueCategories = [...new Set(skills.map((s) => s.category || "Frontend"))];
   const categoryGroups = uniqueCategories.map((cat, i) => ({
     name: cat,
