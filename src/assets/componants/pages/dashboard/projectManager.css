@@ -27,22 +27,27 @@
   --mac-green: #28c840;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
+/* ══════════════════════════════════════════
+   PAGE WRAPPER — always 100% of whatever
+   space the sidebar leaves behind
+══════════════════════════════════════════ */
+
 .project-manager {
+  display: block;
   width: 100%;
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: clamp(16px, 3vw, 32px);
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-primary);
+  padding: clamp(16px, 2vw, 28px);
 }
 
 /* ---------- Header ---------- */
 
 .pm-header {
+  width: 100%;
   margin-bottom: 22px;
 }
 
@@ -92,6 +97,7 @@
 /* ---------- Shared terminal card shell ---------- */
 
 .terminal-card {
+  width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -144,9 +150,10 @@
   white-space: nowrap;
 }
 
-/* ---------- Form card ---------- */
+/* ---------- Form card wrapper ---------- */
 
 .pm-form-card {
+  width: 100%;
   margin-bottom: 26px;
   animation: card-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -156,29 +163,55 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.pm-form {
-  padding: 22px clamp(16px, 3vw, 26px) 24px;
-}
+/* ══════════════════════════════════════════
+   HORIZONTAL FORM — 5 columns, always fills
+   the full width of the card, never overflows
+══════════════════════════════════════════ */
 
-.pm-form-grid {
+.pm-form--horizontal {
+  width: 100%;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 24px;
   align-items: start;
+  padding: 24px clamp(16px, 3vw, 28px) 26px;
 }
 
-.pm-fields {
+.pm-hcol {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-width: 0;
+  gap: 12px;
 }
+
+.pm-hcol__title {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: 4px;
+}
+.pm-hcol__title--spaced { margin-top: 12px; }
 
 .pm-field {
   display: flex;
   flex-direction: column;
   gap: 7px;
   min-width: 0;
+}
+
+.pm-field--grow {
+  flex: 1;
+}
+.pm-field--grow .pm-textarea-input {
+  min-height: 100px;
+}
+
+.pm-preview--compact {
+  margin-top: 8px;
 }
 
 .pm-label {
@@ -227,9 +260,9 @@
 
 .pm-form-actions {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .pm-submit {
@@ -368,6 +401,7 @@
 
 .pm-search-row {
   position: relative;
+  width: 100%;
   margin-bottom: 18px;
 }
 
@@ -404,12 +438,14 @@
 /* ---------- Project grid ---------- */
 
 .pm-grid {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 18px;
 }
 
 .pm-card {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
   border-top: 3px solid var(--teal);
@@ -455,6 +491,7 @@
 }
 
 .pm-card-image-wrap {
+  position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--bg-deep);
@@ -470,6 +507,30 @@
 
 .pm-card:hover .pm-card-image-wrap img {
   transform: scale(1.04);
+}
+
+.pm-card-noimg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.pm-card-imgcount {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.65);
+  padding: 3px 8px;
+  border-radius: 999px;
 }
 
 .pm-card-body {
@@ -488,6 +549,24 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.pm-card-category {
+  display: inline-block;
+  width: fit-content;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border: 1px solid rgba(45, 217, 200, 0.25);
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+
+.pm-card-links {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .pm-card-view {
@@ -548,6 +627,283 @@
   background: rgba(248, 113, 113, 0.2);
 }
 
+/* ---------- Textarea input ---------- */
+
+.pm-textarea-input {
+  width: 100%;
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  resize: vertical;
+  line-height: 1.6;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pm-textarea-input::placeholder {
+  color: var(--text-faint);
+}
+
+.pm-textarea-input:hover {
+  border-color: #2c3346;
+}
+
+.pm-textarea-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+
+.pm-textarea-input--sm {
+  font-size: 12.5px;
+  margin-bottom: 8px;
+}
+.pm-textarea-input--sm:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Checkbox ---------- */
+
+.pm-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.pm-checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pm-checkbox__box {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--surface-titlebar);
+  position: relative;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.pm-checkbox__box::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--bg-deep);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.pm-checkbox input:checked + .pm-checkbox__box {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+.pm-checkbox input:checked + .pm-checkbox__box::after {
+  opacity: 1;
+}
+
+.pm-checkbox__label {
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+/* ---------- Repeatable rows (images, features) ---------- */
+
+.pm-repeatable-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.pm-repeatable-row input {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pm-repeatable-row input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+
+.pm-remove-btn {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  background: var(--red-soft);
+  color: var(--red);
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s ease;
+}
+
+.pm-remove-btn:hover {
+  background: rgba(248, 113, 113, 0.2);
+}
+
+.pm-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--teal);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.pm-add-btn:hover {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pm-add-btn--inline {
+  border-style: solid;
+  background: var(--teal-soft);
+  flex-shrink: 0;
+}
+
+/* ---------- Tech stack pills input ---------- */
+
+.pm-tech-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pm-tech-input-row input {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pm-tech-input-row input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+
+.pm-tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pm-tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--purple-soft);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  color: var(--purple);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+}
+
+.pm-tech-pill button {
+  background: none;
+  border: none;
+  color: var(--purple);
+  cursor: pointer;
+  font-size: 10px;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.pm-tech-pill button:hover {
+  opacity: 1;
+}
+
+/* ---------- Challenge blocks ---------- */
+
+.pm-challenge-block {
+  background: var(--surface-titlebar);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.pm-challenge-block__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.pm-challenge-block__head .pm-remove-btn {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+.pm-terminal-card {
+  width: 100% !important;
+  max-width: none !important;
+  display: block;
+}
+
+.pm-terminal-card .pm-form--horizontal {
+  width: 100% !important;
+}
+
+/* ---------- Featured badge on card ---------- */
+
+.pm-card-featured {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #06231f;
+  background: var(--amber);
+  padding: 4px 10px;
+  border-radius: 8px 0 0 8px;
+  z-index: 2;
+}
+
 /* ---------- Accessibility ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -566,39 +922,56 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* ---------- Responsive breakpoints ---------- */
+/* ══════════════════════════════════════════
+   RESPONSIVE — columns reduce, never scroll,
+   never overlap, always full width
+══════════════════════════════════════════ */
 
-@media (max-width: 800px) {
-  .pm-form-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 1500px) {
+  .pm-form--horizontal {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
 
-  .pm-preview {
-    max-width: 320px;
+@media (max-width: 900px) {
+  .pm-form--horizontal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pm-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .pm-form--horizontal {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pm-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 420px) {
-  .pm-form {
-    padding: 18px 14px 20px;
-  }
-
   .pm-title {
     font-size: 21px;
   }
-
-  .pm-preview {
-    max-width: 100%;
+  .pm-repeatable-row {
+    flex-direction: column;
   }
-
-  .pm-grid {
-    grid-template-columns: 1fr;
+  .pm-remove-btn {
+    width: 100%;
+    height: 32px;
   }
-
+  .pm-tech-input-row {
+    flex-direction: column;
+  }
+  .pm-add-btn--inline {
+    width: 100%;
+    justify-content: center;
+  }
   .pm-form-actions {
     flex-direction: column;
   }
-
   .pm-submit,
   .pm-cancel {
     width: 100%;

@@ -4,22 +4,29 @@ import "./skillManager.css";
 import { DashboardContext } from "../dashboard/Dashboard";
 
 const ACCENTS = ["teal", "purple", "green", "amber"];
+const CATEGORIES = ["Frontend", "Backend", "Database", "Tools"];
+const LEVELS = ["Beginner", "Intermediate", "Advanced", "Expert"];
+
+const DEFAULT_FORM = {
+  name: "",
+  icon: "",
+  color: "#000000",
+  textColor: "#ffffff",
+  category: "Frontend",
+  level: "Intermediate",
+  percentage: 50,
+  description: "",
+  featured: false,
+};
 
 export default function SkillManager() {
   const [skills, setSkills] = useState([]);
   const [search, setSearch] = useState("");
-
-  const [formData, setFormData] = useState({
-    name: "",
-    icon: "",
-    color: "#000000",      
-    textColor: "#ffffff",   
-  });
-
+  const [formData, setFormData] = useState(DEFAULT_FORM);
   const [editId, setEditId] = useState(null);
+
   const token = localStorage.getItem("token");
   const { refetchCounts } = useContext(DashboardContext);
-
   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -36,25 +43,30 @@ export default function SkillManager() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleAddOrUpdate = async (e) => {
     e.preventDefault();
     try {
+      const payload = { ...formData, percentage: Number(formData.percentage) };
+
       if (editId) {
-        await axios.put(`${API_BASE_URL}/skills/${editId}`, formData, {
+        await axios.put(`${API_BASE_URL}/skills/${editId}`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await axios.post(`${API_BASE_URL}/skills`, formData, {
+        await axios.post(`${API_BASE_URL}/skills`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
       fetchSkills();
       refetchCounts();
-      setFormData({ name: "", icon: "", color: "#000000", textColor: "#ffffff" });
+      setFormData(DEFAULT_FORM);
       setEditId(null);
     } catch (err) {
       console.error("Error submitting skill:", err);
@@ -79,12 +91,17 @@ export default function SkillManager() {
       icon: skill.icon,
       color: skill.color || "#000000",
       textColor: skill.textColor || "#ffffff",
+      category: skill.category || "Frontend",
+      level: skill.level || "Intermediate",
+      percentage: skill.percentage ?? 50,
+      description: skill.description || "",
+      featured: skill.featured || false,
     });
     setEditId(skill._id);
   };
 
   const handleCancelEdit = () => {
-    setFormData({ name: "", icon: "", color: "#000000", textColor: "#ffffff" });
+    setFormData(DEFAULT_FORM);
     setEditId(null);
   };
 
@@ -103,7 +120,7 @@ export default function SkillManager() {
         <p className="sm-subtitle">Add, edit, and organize the skills shown on your portfolio.</p>
       </div>
 
-      <div className="terminal-card sm-form-card">
+      <div className="terminal-card sm-terminal-card sm-form-card">
         <div className="terminal-titlebar">
           <div className="terminal-dots">
             <span className="dot dot--red" />
@@ -146,6 +163,85 @@ export default function SkillManager() {
               />
             </div>
           </div>
+
+          <div className="sm-field-row">
+            <div className="sm-field">
+              <label className="sm-label" htmlFor="category">
+                <span className="sm-prompt">$</span> category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="sm-select"
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm-field">
+              <label className="sm-label" htmlFor="level">
+                <span className="sm-prompt">$</span> level
+              </label>
+              <select
+                id="level"
+                name="level"
+                value={formData.level}
+                onChange={handleChange}
+                className="sm-select"
+              >
+                {LEVELS.map((l) => (
+                  <option key={l} value={l}>{l}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="sm-field sm-field--full">
+            <label className="sm-label" htmlFor="percentage">
+              <span className="sm-prompt">$</span> proficiency
+              <span className="sm-range-value">{formData.percentage}%</span>
+            </label>
+            <input
+              id="percentage"
+              type="range"
+              name="percentage"
+              min="0"
+              max="100"
+              value={formData.percentage}
+              onChange={handleChange}
+              className="sm-range"
+            />
+          </div>
+
+          <div className="sm-field sm-field--full">
+            <label className="sm-label" htmlFor="description">
+              <span className="sm-prompt">$</span> description
+            </label>
+            <input
+              id="description"
+              type="text"
+              name="description"
+              placeholder="e.g. Building scalable UIs"
+              value={formData.description}
+              onChange={handleChange}
+              maxLength={80}
+            />
+          </div>
+
+          <label className="sm-checkbox">
+            <input
+              type="checkbox"
+              name="featured"
+              checked={formData.featured}
+              onChange={handleChange}
+            />
+            <span className="sm-checkbox__box" />
+            <span className="sm-checkbox__label">Mark as featured skill</span>
+          </label>
 
           <div className="sm-color-row">
             <label className="sm-color-field">
@@ -224,6 +320,8 @@ export default function SkillManager() {
               className={`sm-card sm-card--${ACCENTS[index % ACCENTS.length]}`}
               key={skill._id}
             >
+              {skill.featured && <span className="sm-featured-tag">★ Featured</span>}
+
               <div className="sm-card-top">
                 <span className="sm-card-icon-wrap">
                   <img className="sm-card-icon" src={skill.icon} alt={skill.name} />
@@ -235,7 +333,28 @@ export default function SkillManager() {
                   {skill.name}
                 </span>
               </div>
+
               <h3 className="sm-card-name">{skill.name}</h3>
+
+              <div className="sm-card-meta">
+                <span className="sm-card-category">{skill.category}</span>
+                <span className="sm-card-level">{skill.level}</span>
+              </div>
+
+              <div className="sm-card-progress">
+                <div className="sm-card-progress__track">
+                  <div
+                    className="sm-card-progress__fill"
+                    style={{ width: `${skill.percentage}%` }}
+                  />
+                </div>
+                <span className="sm-card-progress__num">{skill.percentage}%</span>
+              </div>
+
+              {skill.description && (
+                <p className="sm-card-desc">{skill.description}</p>
+              )}
+
               <div className="sm-card-actions">
                 <button className="sm-edit-btn" onClick={() => handleEdit(skill)}>
                   Edit

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import API from "../../../services/api";
 import "./resume.css";
-import { FaDownload, FaFileAlt, FaSpinner } from "react-icons/fa";
+import { FaDownload, FaFileAlt, FaSpinner, FaEye, FaTimes } from "react-icons/fa";
 
 export default function Resume() {
   const [resumeUrl, setResumeUrl] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]     = useState(true);
+  const [preview, setPreview]     = useState(false);
 
   useEffect(() => {
     const getResume = async () => {
@@ -20,6 +21,42 @@ export default function Resume() {
     };
     getResume();
   }, []);
+
+  if (preview && resumeUrl) {
+    return (
+      <div className="resume-preview-page">
+
+        <div className="rpp-bar">
+          <button
+            className="rpp-back"
+            onClick={() => setPreview(false)}
+          >
+            <FaTimes />
+            Close Preview
+          </button>
+
+          <div className="rpp-bar__info">
+            <span className="rpp-dot" />
+            <span className="rpp-filename">anwar-ali-resume.pdf</span>
+          </div>
+
+          <a href={resumeUrl} download className="rpp-download">
+            <FaDownload />
+            Download
+          </a>
+        </div>
+
+        <div className="rpp-frame-wrap">
+          <iframe
+            src={`${resumeUrl}#toolbar=0`}
+            title="Resume Preview"
+            className="rpp-frame"
+          />
+        </div>
+
+      </div>
+    );
+  }
 
   return (
     <div className="resume-page">
@@ -41,7 +78,7 @@ export default function Resume() {
         <p className="resume-subtext">
           A full overview of my skills, experience, and projects.
           <br />
-          Download the PDF to get started.
+          Preview it here or download the PDF to get started.
         </p>
 
         <div className="resume-card">
@@ -91,7 +128,6 @@ export default function Resume() {
 
           </div>
 
-         
           <div className="card-footer">
             {loading ? (
               <span className="resume-loading">
@@ -99,10 +135,19 @@ export default function Resume() {
                 Fetching resume…
               </span>
             ) : resumeUrl ? (
-              <a href={resumeUrl} download className="download-btn">
-                <FaDownload className="dl-icon" />
-                Download Resume
-              </a>
+              <div className="card-footer__actions">
+                <button
+                  className="preview-btn"
+                  onClick={() => setPreview(true)}
+                >
+                  <FaEye className="pv-icon" />
+                  Preview Resume
+                </button>
+                <a href={resumeUrl} download className="download-btn">
+                  <FaDownload className="dl-icon" />
+                  Download
+                </a>
+              </div>
             ) : (
               <p className="resume-unavailable">No resume available</p>
             )}

@@ -77,7 +77,7 @@ export default function ResumeManager() {
         <p className="rm-subtitle">Upload the PDF shown on your portfolio's resume page.</p>
       </div>
 
-      <div className="terminal-card rm-upload-card">
+      <div className="terminal-card rm-terminal-card rm-upload-card">
         <div className="terminal-titlebar">
           <div className="terminal-dots">
             <span className="dot dot--red" />
@@ -123,7 +123,7 @@ export default function ResumeManager() {
       </div>
 
       {resume && resume.fileUrl ? (
-        <div className="terminal-card rm-preview-card">
+        <div className="terminal-card rm-terminal-card rm-preview-card">
           <div className="terminal-titlebar">
             <div className="terminal-dots">
               <span className="dot dot--red" />

@@ -18,9 +18,10 @@
     "react": "^19.1.0",
     "react-components": "^0.5.1",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.3.0",
     "react-icons": "^5.5.0",
-    "react-typewriter-effect": "^1.1.0"
+    "react-router-dom": "^7.3.0",
+    "react-typewriter-effect": "^1.1.0",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",
@@ -31,7 +32,6 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
-    
     "vite": "^7.0.0"
   }
 }
