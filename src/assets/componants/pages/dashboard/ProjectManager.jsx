@@ -18,6 +18,7 @@ const DEFAULT_FORM = {
   category: "",
   role: "",
   duration: "",
+  order: 0,
   featured: false,
 };
 
@@ -47,7 +48,10 @@ export default function ProjectManager() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : name === "order" ? Number(value) : value,
+    }));
   };
 
   const handleImageChange = (index, value) => {
@@ -114,9 +118,9 @@ export default function ProjectManager() {
 
   const buildPayload = () => ({
     ...formData,
-    images:      formData.images.filter((i) => i.trim() !== ""),
+    images: formData.images.filter((i) => i.trim() !== ""),
     keyFeatures: formData.keyFeatures.filter((f) => f.trim() !== ""),
-    challenges:  formData.challenges.filter((c) => c.problem.trim() !== "" || c.solution.trim() !== ""),
+    challenges: formData.challenges.filter((c) => c.problem.trim() !== "" || c.solution.trim() !== ""),
   });
 
   const handleSubmit = async (e) => {
@@ -157,19 +161,20 @@ export default function ProjectManager() {
 
   const handleEdit = (project) => {
     setFormData({
-      title:            project.title || "",
-      images:           project.images?.length ? project.images : [""],
-      link:             project.link || "",
-      github:           project.github || "",
-      description:      project.description || "",
-      longDescription:  project.longDescription || "",
-      techStack:        project.techStack || [],
-      keyFeatures:      project.keyFeatures?.length ? project.keyFeatures : [""],
-      challenges:       project.challenges?.length ? project.challenges : [{ problem: "", solution: "" }],
-      category:         project.category || "",
-      role:             project.role || "",
-      duration:         project.duration || "",
-      featured:         project.featured || false,
+      title: project.title || "",
+      images: project.images?.length ? project.images : [""],
+      link: project.link || "",
+      github: project.github || "",
+      description: project.description || "",
+      longDescription: project.longDescription || "",
+      techStack: project.techStack || [],
+      keyFeatures: project.keyFeatures?.length ? project.keyFeatures : [""],
+      challenges: project.challenges?.length ? project.challenges : [{ problem: "", solution: "" }],
+      category: project.category || "",
+      role: project.role || "",
+      duration: project.duration || "",
+      featured: project.featured || false,
+      order: project.order ?? 0,
     });
     setEditId(project._id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -181,9 +186,9 @@ export default function ProjectManager() {
     setEditId(null);
   };
 
-  const filteredProjects = projects.filter((p) =>
-    p.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProjects = projects
+    .filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   const shortLink = (url) => {
     if (!url) return "no link";
@@ -233,6 +238,10 @@ export default function ProjectManager() {
             <div className="pm-field">
               <label className="pm-label" htmlFor="role"><span className="pm-prompt">$</span> my-role</label>
               <input id="role" type="text" name="role" placeholder="e.g. Solo Full Stack Dev" value={formData.role} onChange={handleChange} />
+            </div>
+            <div className="pm-field">
+              <label className="pm-label" htmlFor="order"><span className="pm-prompt">$</span> order</label>
+              <input id="order" type="number" name="order" placeholder="0" value={formData.order} onChange={handleChange} />
             </div>
             <label className="pm-checkbox">
               <input type="checkbox" name="featured" checked={formData.featured} onChange={handleChange} />
@@ -304,6 +313,9 @@ export default function ProjectManager() {
                 </div>
                 <div className="pm-preview-footer">
                   {formData.title || "Untitled project"}
+                </div>
+                <div className="pm-preview-order">
+                  order: {formData.order}
                 </div>
               </div>
             </div>
@@ -450,6 +462,8 @@ export default function ProjectManager() {
                 {project.category && (
                   <span className="pm-card-category">{project.category}</span>
                 )}
+
+                <span className="pm-card-order">order: {project.order ?? 0}</span>
 
                 <div className="pm-card-links">
                   {project.link && (

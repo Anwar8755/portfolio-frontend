@@ -887,6 +887,17 @@
 .pm-terminal-card .pm-form--horizontal {
   width: 100% !important;
 }
+.pm-card-order {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: #4a5568;
+}
+.pm-preview-order {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #4a5568;
+  padding: 4px 10px;
+}
 
 /* ---------- Featured badge on card ---------- */
 
